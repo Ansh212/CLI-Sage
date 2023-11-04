@@ -3,11 +3,15 @@ import subprocess,os
 import sys
 import signal
 import config
-color_code = "1;32"
+from colorama import Fore, Back, Style
+
+
+terminal_width = os.get_terminal_size().columns
+continuous_line = u'\u2500' * terminal_width
 
 def signal_handler(signal, frame):
     print()
-    print("Bye")
+    print(Style.BRIGHT + Fore.YELLOW + "Bye" + Style.RESET_ALL)
     sys.exit()
 
 
@@ -32,8 +36,8 @@ def chat_with_gpt(prompt: str) -> str:
             if delta_content:
                 # Print and append the generated content to generated_text variable
                 generated_text += delta_content
-                print(delta_content, end='', flush=True)
-                
+                print(Style.BRIGHT + Fore.LIGHTCYAN_EX + delta_content + Style.RESET_ALL, end='', flush=True)
+
     except Exception as e:
         print(f"Error: {e}")
 
@@ -48,7 +52,7 @@ if __name__ == "__main__":
     prev_res = ""
     response = ""
 
-    print("press control-C to exit")
+    print(Style.BRIGHT + Fore.YELLOW + "Press (E)xecute to run commands and CTRL-C to exit" + Style.RESET_ALL)
     signal.signal(signal.SIGINT, signal_handler)
 
     try:
@@ -60,11 +64,10 @@ if __name__ == "__main__":
 
             if user_input == "E":
                 # Execute the generated command
-                print()
                 os.system(response)
-                print()
+                print(continuous_line)
                 prev_res=""
-                continue 
+                continue
 
             if prev_res != "":
                 prev_res = "This was the previous command " + prev_res

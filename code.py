@@ -20,7 +20,6 @@ def chat_with_gpt(prompt: str) -> str:
 
     try:
         # Print the "Sage:" prompt at the beginning
-        print("Sage:")
 
         response_text = ""
 

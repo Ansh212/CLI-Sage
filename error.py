@@ -6,12 +6,13 @@ import sys
 import signal
 import time
 import config
+from colorama import Fore, Back, Style
 
 color_code = "1;32"
 
 def signal_handler(signal, frame):
     print()
-    print("Bye")
+    print(Style.BRIGHT + Fore.YELLOW + "Bye" + Style.RESET_ALL)
     sys.exit()
 
 
@@ -35,7 +36,7 @@ def chat_with_gpt(prompt: str , role: str) -> str:
         ],
         stream=True
     )
-    
+
     generated_text = ""  # Initialize generated_text here
 
     try:
@@ -49,7 +50,7 @@ def chat_with_gpt(prompt: str , role: str) -> str:
                 for i in delta_content:
                     generated_text += i
                     colortext = color_print(i, color_code)
-                    print(i, end='', flush=True)
+                    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + i + Style.RESET_ALL, end='', flush=True)
                     time.sleep(0.02)
     except Exception as e:
         print(f"Error: {e}")
@@ -59,7 +60,7 @@ def chat_with_gpt(prompt: str , role: str) -> str:
 
 def color_print(text, color_code):
     formatted_text = f"\033[{color_code}m {text} \033[0m"
-    return formatted_text 
+    return formatted_text
 
 def reviewFile(file_path):
     with open(file_path, 'r+') as file:
@@ -71,12 +72,12 @@ def reviewFile(file_path):
         print("Bot helper")
         error_sol = chat_with_gpt(user_message , "d")
 
-        doModify = input(">>> Do you want to AI to modify the file to solve the errors? [y/n] :")
+        doModify = input(Style.BRIGHT + Fore.YELLOW + ">>> Do you want to AI to modify the file to solve the errors? [y/n] :" + Style.RESET_ALL)
 
         if(doModify == "n"):
             return
         mod_code = chat_with_gpt(error_sol + file_content , "m")
-        file.write(mod_code) 
+        file.write(mod_code)
     return
 
 def handle_command(com_string):
@@ -90,7 +91,7 @@ if __name__ == "__main__":
     prev_res = ""
     response = ""
 
-    print("Press control-C to exit")
+    print(Style.BRIGHT + Fore.YELLOW + "Press CTRL-C to exit" + Style.RESET_ALL)
     signal.signal(signal.SIGINT, signal_handler)
 
     try:

@@ -2,7 +2,8 @@ import config
 import openai
 from typing import Dict, Any
 import time
-import sys 
+import sys
+from colorama import Fore, Back, Style
 
 
 # Set your OpenAI API key here
@@ -22,16 +23,18 @@ def chat_with_gpt(prompt: str) -> str:
 
     try:
         # Print the "Sage:" prompt at the beginning
-        print("Sage:", end=' ', flush=True)
+        print(Style.BRIGHT + "Sage:" + Style.RESET_ALL , end=' ', flush=True)
 
         for chunk in response:
             delta_content = chunk['choices'][0]['delta'].get('content', '')
             if delta_content:
                 # Print subsequent responses on the same line
                 for i in (delta_content):
-                    print(i, end='',flush=True)
+                    print(Style.BRIGHT + Fore.LIGHTCYAN_EX + i, end='',flush=True)
                     time.sleep(0.02)
                 #print(delta_content, end='', flush=True)
+        print(Style.RESET_ALL)
+
     except Exception as e:
         print(f"Error: {e}")
 
@@ -39,7 +42,7 @@ def chat_with_gpt(prompt: str) -> str:
     return generated_text
 
 if __name__ == "__main__":
-              
+
     if len(sys.argv) > 1:
         user_input = " ".join(sys.argv[1:])
         response_text = chat_with_gpt(user_input)
