@@ -6,7 +6,6 @@ import sys
 import signal
 import time
 import config
-from colorama import Fore, Back, Style
 
 color_code = "1;32"
 
@@ -60,24 +59,28 @@ def chat_with_gpt(prompt: str , role: str) -> str:
 
 def color_print(text, color_code):
     formatted_text = f"\033[{color_code}m {text} \033[0m"
-    return formatted_text
+    return formatted_text 
 
 def reviewFile(file_path):
-    with open(file_path, 'r+') as file:
+    with open(file_path, 'r') as file:
         file_content = file.read()
 
-        prompt = "Find errors in the code"
-        user_message = f"{prompt}/n{file_content}"
+    prompt = "Find errors in the code"
+    user_message = f"{prompt}/n{file_content}"
 
-        print("Bot helper")
-        error_sol = chat_with_gpt(user_message , "d")
+    print("Bot helper")
+    error_sol = chat_with_gpt(user_message , "d")
 
-        doModify = input(Style.BRIGHT + Fore.YELLOW + ">>> Do you want to AI to modify the file to solve the errors? [y/n] :" + Style.RESET_ALL)
+    doModify = doModify = input(Style.BRIGHT + Fore.YELLOW + ">>> Do you want to AI to modify the file to solve the errors? [y/n] :" + Style.RESET_ALL)
 
-        if(doModify == "n"):
-            return
-        mod_code = chat_with_gpt(error_sol + file_content , "m")
-        file.write(mod_code)
+
+    if(doModify == "n"):
+        return
+    mod_code = chat_with_gpt(error_sol + file_content , "m")
+
+    with open(file_path , 'w') as file:
+        file.write(mod_code);
+
     return
 
 def handle_command(com_string):
@@ -87,7 +90,7 @@ def handle_command(com_string):
     if split_string[0] == "reviewFile":
         reviewFile(split_string[1])
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     prev_res = ""
     response = ""
 
@@ -124,4 +127,3 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         print("Okay")
-

@@ -3,31 +3,38 @@
 
 case "$1" in
     --code)
-        if [ $2 == '-f' ]; then
+        flag=0
+        if [ "$2" == '-f' ]; then
             filename=$3
             prompt=$4
-        elif [ $3 == '-f' ]; then
+        elif [ "$3" == '-f' ]; then
             filename= $4
             prompt= $2
         else
-            echo "Wrong format check usage -f [FILE_NAME]"
-            break
+            flag=1
+            prompt=$2
+            prompt=\"${prompt}\"
+            commando="${prompt}"
         fi
+
         file="-f"
         prompt=\"${prompt}\"
         command="${file} ${filename} ${prompt}"
 
-        python3 /home/shrey/Desktop/hackupto/CLI-Sage/code.py $command
+        if [ $flag == 0 ]; then
+            python3 /home/theoutlier/Music/hack/CLI-Sage/code.py $command
+        else 
+            python3 /home/theoutlier/Music/hack/CLI-Sage/code.py "$commando"
+        fi
         ;;
     --shell)
-        python3 /home/shrey/Desktop/hackupto/CLI-Sage/command.py 
+        python3 /home/theoutlier/Music/hack/CLI-Sage/command.py 
         ;;
     --debug)
-        python3 /home/shrey/Desktop/hackupto/CLI-Sage/error.py
+        python3 /home/theoutlier/Music/hack/CLI-Sage/error.py
         ;;
     *)
-        python3 /home/shrey/Desktop/hackupto/CLI-Sage/chat.py $1 
+        python3 /home/theoutlier/Music/hack/CLI-Sage/chat.py $1 
         ;;
 
-    esac
-
+esac
