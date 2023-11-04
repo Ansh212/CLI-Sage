@@ -62,7 +62,7 @@ if __name__ == "__main__":
             if user_input.lower() in ['quit', 'exit', 'bye', 'q', 'x', 'b']:
                 break
 
-            if user_input == "E":
+            if user_input.lower() == "e":
                 # Execute the generated command
                 os.system(response)
                 print(continuous_line)

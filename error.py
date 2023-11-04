@@ -6,6 +6,7 @@ import sys
 import signal
 import time
 import config
+from colorama import Fore, Back, Style
 
 color_code = "1;32"
 
@@ -40,7 +41,7 @@ def chat_with_gpt(prompt: str , role: str) -> str:
 
     try:
         # Print the "Sage:" prompt at the beginning
-        print("Sage:", end=' ', flush=True)
+        print(Style.BRIGHT + "Sage:", end=' ', flush=True)
 
         for chunk in response:
             delta_content = chunk['choices'][0]['delta'].get('content', '')
@@ -68,7 +69,6 @@ def reviewFile(file_path):
     prompt = "Find errors in the code"
     user_message = f"{prompt}/n{file_content}"
 
-    print("Bot helper")
     error_sol = chat_with_gpt(user_message , "d")
 
     doModify = doModify = input(Style.BRIGHT + Fore.YELLOW + ">>> Do you want to AI to modify the file to solve the errors? [y/n] :" + Style.RESET_ALL)
@@ -90,7 +90,7 @@ def handle_command(com_string):
     if split_string[0] == "reviewFile":
         reviewFile(split_string[1])
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     prev_res = ""
     response = ""
 
@@ -113,7 +113,6 @@ if _name_ == "_main_":
                 print("Error occurred during command execution")
                 print("Exit Code:", e.returncode)
                 print("Error Output:", e.stderr)
-                print("Bot helper")
                 response = chat_with_gpt(e.stderr , "d")
                 color_print(response, color_code)
 

@@ -1,6 +1,17 @@
 #!/bin/bash
 
 
+path=$SAGE_PATH
+
+codepath=$path"/code.py"
+commandpath=$path"/command.py"
+errorpath=$path"/error.py"
+chatpath=$path"/chat.py"
+
+
+echo $code
+
+
 case "$1" in
     --code)
         flag=0
@@ -22,19 +33,20 @@ case "$1" in
         command="${file} ${filename} ${prompt}"
 
         if [ $flag == 0 ]; then
-            python3 /home/theoutlier/Music/hack/CLI-Sage/code.py $command
+            python3 "$codepath" $command
         else 
-            python3 /home/theoutlier/Music/hack/CLI-Sage/code.py "$commando"
+            python3 "$codepath" "$commando"
         fi
         ;;
     --shell)
-        python3 /home/theoutlier/Music/hack/CLI-Sage/command.py 
+        python3 $commandpath
         ;;
     --debug)
-        python3 /home/theoutlier/Music/hack/CLI-Sage/error.py
+        python3 $errorpath
         ;;
     *)
-        python3 /home/theoutlier/Music/hack/CLI-Sage/chat.py $1 
+        arg=$1
+        python3 "$chatpath" "$arg"
         ;;
 
 esac
