@@ -5,6 +5,7 @@ from typing import Dict, Any
 import sys
 import signal
 import time
+import config
 
 color_code = "1;32"
 
@@ -13,15 +14,23 @@ def signal_handler(signal, frame):
     print("Bye")
     sys.exit()
 
-# Set your OpenAI API key here
-api_key: str = ""
-openai.api_key = api_key
 
-def chat_with_gpt(prompt: str) -> str:
+# Set your OpenAI API key here
+openai.api_key = config.api_key
+
+def chat_with_gpt(prompt: str , role: str) -> str:
+
+    role_call=""
+
+    if(role == "d"):
+        role_call = "You are an error message debugger. Explain what the error is and why it is occurring .Do not give the corrected code"
+    else:
+        role_call = "You are code modifier , you will be given the errors , steps to solve the errors and the code . Give the modified code only"
+
     response: Dict[str, Any] = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",  # Use the GPT-3.5 Turbo engine
         messages=[
-            {"role": "system", "content": "You are an error message debugger. Explain what the error is and why it is occurring"},
+            {"role": "system", "content": role_call},
             {"role": "user", "content": prompt}
         ],
         stream=True
@@ -53,16 +62,25 @@ def color_print(text, color_code):
     return formatted_text 
 
 def reviewFile(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r+') as file:
         file_content = file.read()
 
-    prompt = "Find errors in the code"
-    user_message = f"{prompt}/n{file_content}"
+        prompt = "Find errors in the code"
+        user_message = f"{prompt}/n{file_content}"
 
-    print("Bot helper")
-    color_print(chat_with_gpt(user_message), color_code)
+        print("Bot helper")
+        error_sol = chat_with_gpt(user_message , "d")
+
+        doModify = input(">>> Do you want to AI to modify the file to solve the errors? [y/n] :")
+
+        if(doModify == "n"):
+            return
+        mod_code = chat_with_gpt(error_sol + file_content , "m")
+        file.write(mod_code) 
+    return
 
 def handle_command(com_string):
+
     split_string = com_string.split()
 
     if split_string[0] == "reviewFile":
@@ -92,7 +110,7 @@ if __name__ == "__main__":
                 print("Exit Code:", e.returncode)
                 print("Error Output:", e.stderr)
                 print("Bot helper")
-                response = chat_with_gpt(e.stderr)
+                response = chat_with_gpt(e.stderr , "d")
                 color_print(response, color_code)
 
             if user_input.lower() in ['quit', 'exit', 'bye', 'q', 'x', 'b']:

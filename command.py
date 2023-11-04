@@ -2,7 +2,7 @@ import openai
 import subprocess,os
 import sys
 import signal
-
+import config
 color_code = "1;32"
 
 def signal_handler(signal, frame):
@@ -10,9 +10,9 @@ def signal_handler(signal, frame):
     print("Bye")
     sys.exit()
 
-# Set your OpenAI API key here
-api_key: str = ""
-openai.api_key = api_key
+
+openai.api_key = config.api_key
+
 
 def chat_with_gpt(prompt: str) -> str:
     generated_text = ""

@@ -1,3 +1,4 @@
+import config
 import openai
 from typing import Dict, Any
 import time
@@ -5,8 +6,7 @@ import sys
 
 
 # Set your OpenAI API key here
-api_key: str = ""
-openai.api_key = api_key
+openai.api_key = config.api_key
 
 def chat_with_gpt(prompt: str) -> str:
     generated_text = ""

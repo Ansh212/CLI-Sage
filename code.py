@@ -1,10 +1,10 @@
 import openai
 import sys
-import argparse
+import config
+from colorama import Fore, Back, Style
 
 # Set your OpenAI API key here
-api_key: str = ""
-openai.api_key = api_key
+openai.api_key = config.api_key
 
 def chat_with_gpt(prompt: str) -> str:
     generated_text = ""
@@ -28,26 +28,23 @@ def chat_with_gpt(prompt: str) -> str:
             delta_content = chunk['choices'][0]['delta'].get('content', '')
             if delta_content:
                 # Print subsequent responses on the same line
-                print(delta_content, end='', flush=True)
+                print(Style.BRIGHT + Fore.LIGHTCYAN_EX + delta_content, end='', flush=True)
                 response_text += delta_content
+        print(Style.RESET_ALL)
         return response_text
 
     except Exception as e:
         print(f"Error: {e}")
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Chat with GPT-3.5 Turbo")
-    parser.add_argument("prompt", type=str, help="The prompt to send to GPT-3.5 Turbo")
-    parser.add_argument("-f", "--file", type=str, help="Save the response to a file", default=None)
-
-    args = parser.parse_args()
-
-    response_text = chat_with_gpt(args.prompt)
-
-    if args.file:
-        with open(args.file, "w") as output_file:
+    if len(sys.argv) > 2:
+        filename = str(sys.argv[2])
+        with open(filename, "w") as output_file:
+            user_input = " ".join(sys.argv[3:])
+            response_text = chat_with_gpt(user_input)
             output_file.write(response_text)
-            print(f"\nResponse saved to {args.file}")
-    
-    print("\nChatGPT: Goodbye!")
-
+            print(f"\nResponse saved to {filename}")
+    else:
+        user_input = " ".join(sys.argv[1:])
+        response_text = chat_with_gpt(user_input)

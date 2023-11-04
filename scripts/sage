@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+case "$1" in
+    --code)
+        file="-f"
+        prompt=\"${prompt}\"
+        command="${file} ${filename} ${prompt}"
+        if [ $2 == '-f' ]; then
+            filename=$3
+            prompt=$4
+        elif [ $3 == '-f' ]; then
+            filename= $4
+            prompt= $2
+        else
+            echo "Wrong format check usage -f [FILE_NAME]"
+            break
+        fi
+        python3 /home/theoutlier/Music/hack/CLI-Sage/code.py $command
+        ;;
+    --shell)
+        python3 /home/theoutlier/Music/hack/CLI-Sage/command.py 
+        ;;
+    --debug)
+        python3 /home/theoutlier/Music/hack/CLI-Sage/error.py
+        ;;
+    *)
+        python3 /home/theoutlier/Music/hack/CLI-Sage/chat.py $1 
+        ;;
+
+esac
+
