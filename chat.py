@@ -5,7 +5,7 @@ import sys
 
 
 # Set your OpenAI API key here
-api_key: str = "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"
+api_key: str = ""
 openai.api_key = api_key
 
 def chat_with_gpt(prompt: str) -> str:
