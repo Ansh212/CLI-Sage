@@ -102,3 +102,5 @@ python3 setup.py
 
 
 ### Declarations
+
+All this code was written during Hackathon.
