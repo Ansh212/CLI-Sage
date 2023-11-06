@@ -101,6 +101,3 @@ python3 setup.py
 ![Debug](https://github.com/Ansh212/CLI-Sage/assets/97459476/c0299f69-4c69-417a-b08c-d11ae09e1c3f)
 
 
-### Declarations
-
-All this code was written during Hackathon.
