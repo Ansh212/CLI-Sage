@@ -3,6 +3,7 @@ Introducing "CLI-Sage" - a command line productivity tool that seamlessly integr
 
 ### Demo Video
 
+[![Watch the video](https://img.youtube.com/vi/84URgo4Ye4M/0.jpg)](https://www.youtube.com/watch?v=84URgo4Ye4M)
 
 ### Installation
 #### Prerequisites
